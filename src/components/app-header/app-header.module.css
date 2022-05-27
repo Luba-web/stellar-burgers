@@ -1,30 +1,25 @@
 .header {
-  max-width: 1920px;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
+  width: 100%;
   background: #1c1c21;
-  display: grid;
-  color: #8585ad;
 }
 
 .header__link {
   text-decoration: none;
   display: flex;
-  color: #8585ad;
+  color: white;
 }
 
 .header__link:first-child {
   margin-right: 50px;
 }
 
-.header__link_active {
-  color: white;
-}
-
 .header__nav {
-  justify-self: center;
-  align-self: center;
-  grid-column: 1/2;
-  grid-row: 1/2;
+  margin: 0 auto;
+  max-width: 1280px;
+  display: grid;
+  grid-template-columns: 35% 30% 35%;
 }
 
 .header__ul {
@@ -37,33 +32,17 @@
   display: block;
 }
 
-.header__text {
-  margin: 0;
-  margin-left: 8px;
-  font-size: 16px;
-  line-height: 24px;
-}
-
 .header__btn {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   cursor: pointer;
   background: transparent;
-  color: #8585ad;
   border: none;
-  grid-column: 4/5;
-  grid-row: 1/2;
 }
 
 .logo {
   display: flex;
   justify-content: center;
-  grid-column: 2/4;
-  grid-row: 1/2;
   padding: 8px;
-}
-
-.header__icon {
-  justify-content: content;
-  font-size: 20px;
 }

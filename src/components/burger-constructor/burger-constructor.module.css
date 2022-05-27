@@ -1,0 +1,50 @@
+.contener {
+  box-sizing: border-box;
+  max-width: 600px;
+  max-height: 912px;
+  width: 100%;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 568px;
+  max-height: 656px;
+  overflow-y: scroll;
+}
+
+.block::-webkit-scrollbar-thumb {
+  box-sizing: border-box;
+  background-color: #8585ad;
+  border: 3px solid #8585ad;
+}
+
+.block::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2f2f37;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item {
+  width: 536px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.priceSum {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  padding-right: 36px;
+}

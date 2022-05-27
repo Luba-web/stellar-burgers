@@ -7,31 +7,32 @@ function AppHeader() {
     <header className={styles.header}>
       <nav className={styles.header__nav}>
         <ul className={styles.header__ul}>
-          <li className={styles.header__li}>
-            <a href="#" className={styles.header__link}>
-              <BurgerIcon type="primary" className={styles.header__icon} />
-              <p className={styles.header__text}>
+          <li className={`${styles.header__li} pt-4 pb-4`}>
+            <a href={"#"} className={styles.header__link}>
+              <BurgerIcon type="primary" />
+              <p className="pl-2 text text_type_main-default">
                 Конструктор
               </p>
             </a>
           </li>
-          <li className={styles.header__li}>
-            <a href="#" className={styles.header__link}>
-              <ListIcon type="primary" className={styles.header__icon} />
-              <p className={styles.header__text}>
+          <li className={`${styles.header__li} pt-4 pb-4`}>
+            <a href={"#"} className={styles.header__link}>
+              <ListIcon type="secondary"/>
+              <p className="pl-2 text text_type_main-default text_color_inactive">
                 Лента заказов
               </p>
             </a>
           </li>
         </ul>
-      </nav>
+      
+      <div className={styles.logo}><Logo /></div>
       <button className={styles.header__btn}>
-        <ProfileIcon type="primary" className={styles.header__icon} />
-        <p className={styles.header__text}>
+        <ProfileIcon type="secondary"/>
+        <p className="pl-2 text text_type_main-default text_color_inactive">
           Личный кабинет
         </p>
       </button>
-      <div className={styles.logo}><Logo /></div>
+      </nav>
     </header>
   );
 }

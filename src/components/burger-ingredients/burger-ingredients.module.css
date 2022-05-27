@@ -1,0 +1,36 @@
+.block {
+  max-height: 756px;
+  overflow-y: scroll;
+}
+
+.block::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  border: 3px solid #8585ad;
+}
+
+.block::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2f2f37;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  max-width: 272px;
+  max-height: 208px;
+}
+
+.priceTitle {
+  display: flex;
+  justify-content: center;
+}
