@@ -1,16 +1,15 @@
 .contener {
+  width: 100%;
   box-sizing: border-box;
   max-width: 600px;
   max-height: 912px;
-  width: 100%;
 }
 
 .block {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 568px;
-  max-height: 656px;
+  justify-content: center;
+  max-width: 585px;
+  max-height: 480px;
   overflow-y: scroll;
 }
 
@@ -35,16 +34,22 @@
 }
 
 .item {
-  width: 536px;
   display: flex;
-  flex-direction: row;
   align-items: center;
 }
 
-.priceSum {
+.blockBun {
   display: flex;
-  align-items: center;
+  justify-content: center;
+}
+
+.priceBox {
+  composes: item;
   justify-content: flex-end;
-  flex-direction: row;
-  padding-right: 36px;
+  padding-right: 34px;
+}
+
+.priceStyle {
+  composes: priceBox;
+  padding-right: 40px;
 }
