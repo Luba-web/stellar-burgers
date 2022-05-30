@@ -10,9 +10,22 @@ import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 
 const BurgerConstructor = ({ arrIngredients }) => {
+
+  const ingredientsList = arrIngredients
+    .filter((item) => item.type !== "bun")
+    .map((element, index) => (
+      <li className={styles.item} key={index}>
+        <DragIcon />
+        <ConstructorElement
+          text={element.name}
+          price={element.price}
+          thumbnail={element.image}
+        />
+      </li>
+    ))
   
   return (
-    <section className={`${styles.contener} mt-25 `}>
+    <section className={`${styles.container} mt-25 `}>
       <div className={styles.blockBun}>
         <ConstructorElement
           type="top"
@@ -24,18 +37,7 @@ const BurgerConstructor = ({ arrIngredients }) => {
       </div>
       <div className={`${styles.block} mt-4`}>
         <ul className={styles.list}>
-          {arrIngredients
-            .filter((item) => item.type !== "bun")
-            .map((element, index) => (
-              <li className={styles.item} key={index}>
-                <DragIcon />
-                <ConstructorElement
-                  text={element.name}
-                  price={element.price}
-                  thumbnail={element.image}
-                />
-              </li>
-            ))}
+          {ingredientsList}
         </ul>
       </div>
       <div className={styles.blockBun}>

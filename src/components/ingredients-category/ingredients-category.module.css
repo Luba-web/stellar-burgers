@@ -1,0 +1,21 @@
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  max-width: 272px;
+  max-height: 208px;
+}
+
+.priceTitle {
+  display: flex;
+  justify-content: center;
+}
