@@ -7,6 +7,7 @@
 }
 
 .item {
+  position: relative;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -18,4 +19,10 @@
 .priceTitle {
   display: flex;
   justify-content: center;
+}
+
+.count {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

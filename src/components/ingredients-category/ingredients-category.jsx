@@ -10,7 +10,7 @@ function IngredientsCategory({ element, type, onClick }) {
     'sauce': 'Соусы',
     'main': 'Начинки'
   }
-
+  
   return (
     <section className="mb-5">
       <h2 className="text text_type_main-medium pt-10">{objTabName[type]}</h2>
@@ -27,7 +27,9 @@ function IngredientsCategory({ element, type, onClick }) {
                 <CurrencyIcon type="primary" />
               </div>
               <p className="text text_type_main-default">{elem.name}</p>
-              <Counter count={1} size="default" />
+              <div className={`${styles.count}`}>
+                <Counter count={1} size="default" />
+              </div>
             </li>
           ))}
       </ul>
@@ -36,9 +38,9 @@ function IngredientsCategory({ element, type, onClick }) {
 }
 
 IngredientsCategory.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType),
-  type: PropTypes.string,
-  onclick: PropTypes.func
+  ingredients: PropTypes.arrayOf(ingredientPropType).isRequired,
+  type: PropTypes.string.isRequired,
+  onclick: PropTypes.func.isRequired
 
 }
 
