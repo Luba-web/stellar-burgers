@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import styles from "./burger-ingredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
@@ -7,7 +7,8 @@ import {ingredientPropType} from '../../utils/prop-types'
 import IngredientsCategory from "../ingredients-category/ingredients-category";
 
 const BurgerIngredients = ({ arrIngredients, onClick }) => {
-  const [current, setCurrent] = useState('bun')
+  const [current, setCurrent] = useState('bun');
+  
   return (
     <section className="mt-10 mr-10">
       <h2 className="text text_type_main-large pb-5">Соберите бургер</h2>
@@ -41,8 +42,7 @@ const BurgerIngredients = ({ arrIngredients, onClick }) => {
 
 BurgerIngredients.propTypes = {
   arrIngredients: PropTypes.arrayOf(ingredientPropType).isRequired,
-  type: PropTypes.string.isRequired, 
-  onclick: PropTypes.func,
+
 }
 
 export default BurgerIngredients;

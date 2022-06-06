@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -9,7 +9,16 @@ import {
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 
-const BurgerConstructor = ({ arrIngredients }) => {
+const BurgerConstructor = ({ arrIngredients, onClick }) => {
+  const [total, setTotal] = useState(0);
+  const res = [];
+  arrIngredients.map((item) => {
+      if (item.type !== 'bun') res.push(item)
+  })
+  useEffect(() => {
+      const price = res.reduce((sum, item) => sum + item.price, arrIngredients[0].price)
+      setTotal(price)
+  }, [arrIngredients])
 
   const ingredientsList = arrIngredients
     .filter((item) => item.type !== "bun")
@@ -52,18 +61,19 @@ const BurgerConstructor = ({ arrIngredients }) => {
       <div className={`${styles.priceBox} pt-10`}>
         <div className={`${styles.priceStyle} `}>
           <p>
-            <span className="text text_type_digits-medium pr-2">610</span>
+            <span className="text text_type_digits-medium pr-2">{total}</span>
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary">Оформить заказ</Button>
+        <Button type="primary" onClick={onClick}>Оформить заказ</Button>
       </div>
     </section>
   )
 }
 
 BurgerConstructor.propTypes = {
-  arrIngredients: PropTypes.arrayOf(ingredientPropType).isRequired
+  arrIngredients: PropTypes.arrayOf(ingredientPropType).isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 export default BurgerConstructor;

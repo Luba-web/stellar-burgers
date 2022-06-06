@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredients-category.module.css";
 import PropTypes from 'prop-types';
 import {ingredientPropType} from '../../utils/prop-types'
 
 function IngredientsCategory({ element, type, onClick }) {
+  const [count, setCount] = useState(1);
+
   const objTabName = {
     'bun': 'Булки',
     'sauce': 'Соусы',
@@ -28,7 +30,9 @@ function IngredientsCategory({ element, type, onClick }) {
               </div>
               <p className="text text_type_main-default">{elem.name}</p>
               <div className={`${styles.count}`}>
-                <Counter count={1} size="default" />
+                {count > 0 &&
+                  <Counter count={count} size="default" onClick={setCount}/>
+                }
               </div>
             </li>
           ))}
@@ -38,10 +42,9 @@ function IngredientsCategory({ element, type, onClick }) {
 }
 
 IngredientsCategory.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropType).isRequired,
+  element: PropTypes.arrayOf(ingredientPropType).isRequired,
   type: PropTypes.string.isRequired,
-  onclick: PropTypes.func.isRequired
-
+  onclick: PropTypes.func
 }
 
 export default IngredientsCategory;

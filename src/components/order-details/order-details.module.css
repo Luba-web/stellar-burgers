@@ -1,0 +1,18 @@
+.number {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.box {
+  display: contents;
+}
+
+.text {
+  color: #f2f2f3;
+}
+
+.icon {
+  box-sizing: border-box;
+  width: 120px;
+  height: 120px;
+}
