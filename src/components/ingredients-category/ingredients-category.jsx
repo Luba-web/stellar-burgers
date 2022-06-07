@@ -42,7 +42,7 @@ function IngredientsCategory({ element, type, onClick }) {
 }
 
 IngredientsCategory.propTypes = {
-  element: PropTypes.arrayOf(ingredientPropType).isRequired,
+  element: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   type: PropTypes.string.isRequired,
   onclick: PropTypes.func
 }

@@ -12,9 +12,11 @@ import {ingredientPropType} from '../../utils/prop-types'
 const BurgerConstructor = ({ arrIngredients, onClick }) => {
   const [total, setTotal] = useState(0);
   const res = [];
+
   arrIngredients.map((item) => {
       if (item.type !== 'bun') res.push(item)
   })
+
   useEffect(() => {
       const price = res.reduce((sum, item) => sum + item.price, arrIngredients[0].price)
       setTotal(price)
@@ -32,16 +34,18 @@ const BurgerConstructor = ({ arrIngredients, onClick }) => {
         />
       </li>
     ))
-  
+
+  const bunList = arrIngredients.find(a => a.type === "bun");
+
   return (
     <section className={`${styles.container} mt-25 `}>
       <div className={styles.blockBun}>
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={`${arrIngredients[0].name} (верх)`}
-          price={200}
-          thumbnail={arrIngredients[0].image}
+          text={`${bunList.name} (верх)`}
+          price={bunList.price}
+          thumbnail={bunList.image}
         />
       </div>
       <div className={`${styles.block} mt-4`}>
@@ -53,9 +57,9 @@ const BurgerConstructor = ({ arrIngredients, onClick }) => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={`${arrIngredients[0].name} (низ)`}
-          price={200}
-          thumbnail={arrIngredients[0].image}
+          text={`${bunList.name} (низ)`}
+          price={bunList.price}
+          thumbnail={bunList.image}
         />
       </div>
       <div className={`${styles.priceBox} pt-10`}>
@@ -72,7 +76,7 @@ const BurgerConstructor = ({ arrIngredients, onClick }) => {
 }
 
 BurgerConstructor.propTypes = {
-  arrIngredients: PropTypes.arrayOf(ingredientPropType).isRequired,
+  arrIngredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
   onClick: PropTypes.func.isRequired
 }
 

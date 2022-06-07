@@ -12,3 +12,7 @@
   width: 8px;
   background-color: #2f2f37;
 }
+
+.navIngredients {
+  display: "flex";
+}
