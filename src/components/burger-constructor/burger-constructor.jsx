@@ -6,21 +6,37 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
-import {ingredientPropType} from '../../utils/prop-types'
+import PropTypes from "prop-types";
+import { ingredientPropType } from "../../utils/prop-types";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
-const BurgerConstructor = ({ arrIngredients, onClick }) => {
+const BurgerConstructor = ({ arrIngredients }) => {
   const [total, setTotal] = useState(0);
+  const [isOrderDetailsOpened, setOrderDetailsOpened] = useState(false); //стейт для ордера
   const res = [];
 
+  //создание массива без булочек
   arrIngredients.map((item) => {
-      if (item.type !== 'bun') res.push(item)
-  })
+    if (item.type !== "bun") res.push(item);
+  });
 
+  //посчет итоговой суммы
   useEffect(() => {
-      const price = res.reduce((sum, item) => sum + item.price, arrIngredients[0].price)
-      setTotal(price)
-  }, [arrIngredients])
+    const price = res.reduce(
+      (sum, item) => sum + item.price,
+      arrIngredients[0].price
+    );
+    setTotal(price);
+  }, [arrIngredients]);
+
+  //открытие модального окона ордеров
+  const openOrderModal = () => setOrderDetailsOpened(true);
+
+  // Закрытие модального окна
+  const closeModals = () => {
+    setOrderDetailsOpened(false);
+  };
 
   const ingredientsList = arrIngredients
     .filter((item) => item.type !== "bun")
@@ -33,9 +49,9 @@ const BurgerConstructor = ({ arrIngredients, onClick }) => {
           thumbnail={element.image}
         />
       </li>
-    ))
+    ));
 
-  const bunList = arrIngredients.find(a => a.type === "bun");
+  const bunList = arrIngredients.find((a) => a.type === "bun");
 
   return (
     <section className={`${styles.container} mt-25 `}>
@@ -49,9 +65,7 @@ const BurgerConstructor = ({ arrIngredients, onClick }) => {
         />
       </div>
       <div className={`${styles.block} mt-4`}>
-        <ul className={styles.list}>
-          {ingredientsList}
-        </ul>
+        <ul className={styles.list}>{ingredientsList}</ul>
       </div>
       <div className={styles.blockBun}>
         <ConstructorElement
@@ -69,15 +83,21 @@ const BurgerConstructor = ({ arrIngredients, onClick }) => {
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" onClick={onClick}>Оформить заказ</Button>
+        <Button type="primary" onClick={openOrderModal}>
+          Оформить заказ
+        </Button>
       </div>
+      {isOrderDetailsOpened && (
+        <Modal title="" onClose={closeModals}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
-  )
-}
+  );
+};
 
 BurgerConstructor.propTypes = {
   arrIngredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-  onClick: PropTypes.func.isRequired
-}
+};
 
 export default BurgerConstructor;
