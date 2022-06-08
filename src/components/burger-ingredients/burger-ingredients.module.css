@@ -1,0 +1,18 @@
+.block {
+  max-height: 756px;
+  overflow-y: scroll;
+}
+
+.block::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  border: 3px solid #8585ad;
+}
+
+.block::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2f2f37;
+}
+
+.navIngredients {
+  display: "flex";
+}
