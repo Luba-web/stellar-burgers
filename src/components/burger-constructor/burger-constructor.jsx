@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
@@ -6,39 +6,23 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../utils/prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
+//import reducer from "../../hooks/burger-constructor-reducer";
+import { saveOrder } from "../../utils/api";
+import BurgerIngredientsContext from "../../services/burger-ingredients-context";
 
-const BurgerConstructor = ({ arrIngredients }) => {
+const BurgerConstructor = () => {
+  const ingredients = useContext(BurgerIngredientsContext);
+
   const [total, setTotal] = useState(0);
   const [isOrderDetailsOpened, setOrderDetailsOpened] = useState(false); //стейт для ордера
+
+  const [modalData, setModalData] = useState(null);
   const res = [];
 
-  //создание массива без булочек
-  arrIngredients.map((item) => {
-    if (item.type !== "bun") res.push(item);
-  });
-
-  //посчет итоговой суммы
-  useEffect(() => {
-    const price = res.reduce(
-      (sum, item) => sum + item.price,
-      arrIngredients[0].price
-    );
-    setTotal(price);
-  }, [arrIngredients]);
-
-  //открытие модального окона ордеров
-  const openOrderModal = () => setOrderDetailsOpened(true);
-
-  // Закрытие модального окна
-  const closeModals = () => {
-    setOrderDetailsOpened(false);
-  };
-
-  const ingredientsList = arrIngredients
+  const bunList = ingredients.find((a) => a.type === "bun");
+  const ingredientsList = ingredients
     .filter((item) => item.type !== "bun")
     .map((element, index) => (
       <li className={styles.item} key={index}>
@@ -51,7 +35,36 @@ const BurgerConstructor = ({ arrIngredients }) => {
       </li>
     ));
 
-  const bunList = arrIngredients.find((a) => a.type === "bun");
+  const arrIngredientsId = ingredients.map((element) => element._id);
+
+  //создание массива без булочек
+  ingredients.map((item) => {
+    if (item.type !== "bun") res.push(item);
+  });
+
+  //посчет итоговой суммы
+  useEffect(() => {
+    const price = res.reduce(
+      (sum, item) => sum + item.price,
+      ingredients[0].price
+    );
+    setTotal(price);
+  }, [ingredients]);
+
+  const handleOrderClick = () => {
+    saveOrder(arrIngredientsId)
+      .then((data) => {
+        setModalData(data);
+        // открытие модального окна ордеров
+        setOrderDetailsOpened(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  // Закрытие модального окна
+  const closeModals = () => {
+    setOrderDetailsOpened(false);
+  };
 
   return (
     <section className={`${styles.container} mt-25 `}>
@@ -83,21 +96,17 @@ const BurgerConstructor = ({ arrIngredients }) => {
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" onClick={openOrderModal}>
+        <Button type="primary" onClick={handleOrderClick}>
           Оформить заказ
         </Button>
       </div>
       {isOrderDetailsOpened && (
         <Modal title="" onClose={closeModals}>
-          <OrderDetails />
+          <OrderDetails orderNumber={modalData.order.number} />
         </Modal>
       )}
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  arrIngredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };
 
 export default BurgerConstructor;

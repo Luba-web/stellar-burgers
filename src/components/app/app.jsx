@@ -3,7 +3,8 @@ import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import getIngredientsDataServer from "../../utils/api";
+import { getIngredientsDataServer } from "../../utils/api";
+import BurgerIngredientsContext from "../../services/burger-ingredients-context";
 
 function App() {
   //стейт для Api
@@ -47,13 +48,15 @@ function App() {
     <>
       <div className={styles.body}>
         <AppHeader />
-        {/* проверка есть ли массив */}
-        {ingredients.data.length > 0 && (
-          <main className={styles.container}>
-            <BurgerIngredients arrIngredients={ingredients.data} />
-            <BurgerConstructor arrIngredients={ingredients.data} />
-          </main>
-        )}
+        <BurgerIngredientsContext.Provider value={ingredients.data}>
+          {/* проверка есть ли массив */}
+          {ingredients.data.length > 0 && (
+            <main className={styles.container}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </main>
+          )}
+        </BurgerIngredientsContext.Provider>
       </div>
     </>
   );

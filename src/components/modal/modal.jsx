@@ -1,4 +1,4 @@
-import ReactDOM, { createPortal } from 'react-dom';
+import ReactDOM, { createPortal } from "react-dom";
 import styles from "./modal.module.css";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { useEffect } from "react";
@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 const modalsContainer = document.querySelector("#modals");
 
 const Modal = ({ title, children, onClose }) => {
-  
   const handleEscKeydown = (evt) => {
     evt.key === "Escape" && onClose();
   };
@@ -27,9 +26,7 @@ const Modal = ({ title, children, onClose }) => {
   return createPortal(
     <>
       <div className={styles.container}>
-        <h3
-          className={`${styles.title} text text_type_main-large mt-10 ml-10`}
-        >
+        <h3 className={`${styles.title} text text_type_main-large mt-10 ml-10`}>
           {title}
         </h3>
         <button className={styles.closeBtn} onClick={closeModalBtn}>
