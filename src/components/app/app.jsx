@@ -1,62 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { getIngredientsDataServer } from "../../utils/api";
-import BurgerIngredientsContext from "../../services/burger-ingredients-context";
+
+import { getIngredients } from "../../services/actions/burger-ingredients.js.js";
+
+import { useDispatch, useSelector } from "react-redux";
+
+// import { DndProvider } from "react-dnd";
+// import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  //стейт для Api
-  const [ingredients, setIngredients] = useState({
-    data: [],
-    isLoading: false,
-    hasError: false,
-    errorMessage: "",
-  });
+  const dispatch = useDispatch();
 
-  //Api запрос
-  const getIngredientsData = () => {
-    setIngredients({
-      ...ingredients,
-      isLoading: true,
-      hasError: false,
-    });
+  const { ingredientsRequest } = useSelector((state) => state.burgerIngredients);
 
-    getIngredientsDataServer()
-      .then((res) =>
-        setIngredients({
-          ...ingredients,
-          data: res.data,
-          isLoading: false,
-        })
-      )
-
-      .catch((err) =>
-        setIngredients({
-          ...ingredients,
-          isLoading: false,
-          hasError: true,
-          errorMessage: err.message,
-        })
-      );
-  };
-
-  useEffect(getIngredientsData, []);
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <div className={styles.body}>
         <AppHeader />
-        <BurgerIngredientsContext.Provider value={ingredients.data}>
-          {/* проверка есть ли массив */}
-          {ingredients.data.length > 0 && (
+
+        {ingredientsRequest ? (
+          <>
+            <p
+              className={`${styles.failed} text text_type_main-large text_color_inactive mt-15`}
+            >
+              Готовим ингридиенты... еще не чуть чуть...
+            </p>
+          </>
+        ) : (
             <main className={styles.container}>
               <BurgerIngredients />
               <BurgerConstructor />
             </main>
-          )}
-        </BurgerIngredientsContext.Provider>
+        )}
       </div>
     </>
   );

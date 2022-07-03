@@ -1,0 +1,6 @@
+/*Экшены для переноса dnd */
+export const ADD_BUN = "ADD_BUN"
+export const ADD_INGREDIENTSCONSTRUCTOR = "ADD_INGREDIENTSCONSTRUCTOR"
+export const DELETE_ITEM = "DELETE_ITEM"
+export const RESET_ITEMS = "RESET_ITEMS"
+export const MOVE_CONSTRUCTOR_ITEM = "MOVE_CONSTRUCTOR_ITEM"

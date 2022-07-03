@@ -1,20 +1,41 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useState, useEffect } from "react";
 import styles from "./burger-ingredients.module.css";
+
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsCategory from "../ingredients-category/ingredients-category";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import BurgerIngredientsContext from "../../services/burger-ingredients-context";
+
+import { useSelector, useDispatch } from "react-redux";
+import { INGREDIENT_DETAILS, DETAILS_REMOVE } from "../../services/actions/details";
+import { useInView } from "react-hook-inview";
 
 const BurgerIngredients = () => {
-  const ingredients = useContext(BurgerIngredientsContext); //контекст из App
+  const dispatch = useDispatch();
+  const { ingredients } = useSelector(state => state.burgerIngredients);
 
   const [current, setCurrent] = useState("bun"); //стейт для категорий
   const [isIngredientsOpened, setIngredientsOpened] = useState(false); //стейт для ингридиента
-  const [cardIngredient, setCardIngredient] = useState({}); //стейт для выбранной карточки
 
   //прокрутка на категорию
+  const [bunsRef, inViewBuns] = useInView(
+    { threshold: 0.1, trackVisibility: true, delay: 150 })
+  const [saucesRef, inViewSauces] = useInView(
+    { threshold: 0.1, trackVisibility: true, delay: 150 })
+  const [mainsRef, inViewMains] = useInView(
+    { threshold: 0.1, trackVisibility: true, delay: 150 })
+
+ useEffect(() => {
+    if (inViewBuns) {
+       setCurrent("bun")
+    } else if (inViewSauces) {
+       setCurrent("sauce")
+    } else if (inViewMains) {
+       setCurrent("main")
+    }
+ }, [inViewBuns, inViewSauces, inViewMains])
+
   const scroll = (id) => {
     setCurrent(id);
     const section = document.getElementById(id);
@@ -22,14 +43,18 @@ const BurgerIngredients = () => {
   };
 
   //открытие модального окона ингридиентов
-  const openIngredientsModal = (item) => {
-    setCardIngredient(item);
+  const openIngredientsModal = (ingredient) => {
+    dispatch({
+      type: INGREDIENT_DETAILS,
+      data: ingredient
+    });
     setIngredientsOpened(true);
   };
 
   // Закрытие модального окна
   const closeModals = () => {
     setIngredientsOpened(false);
+    dispatch({ type: DETAILS_REMOVE });
   };
 
   return (
@@ -53,37 +78,39 @@ const BurgerIngredients = () => {
         <Tab
           value="main"
           active={current === "main"}
-          onClick={() => scroll("main")}
+          onClick={() => scroll("main")}         
         >
           Начинки
         </Tab>
       </nav>
+      {ingredients !== undefined ? (
+      <>
       <div className={styles.block}>
-        <div id={"bun"}>
+        <div id={"bun"} ref={bunsRef}>
           <IngredientsCategory
-            element={ingredients}
             type="bun"
             onClick={openIngredientsModal}
           />
         </div>
-        <div id={"sauce"}>
+        <div id={"sauce"} ref={saucesRef}>
           <IngredientsCategory
-            element={ingredients}
             type="sauce"
             onClick={openIngredientsModal}
           />
         </div>
-        <div id={"main"}>
+        <div id={"main"} ref={mainsRef}>
           <IngredientsCategory
-            element={ingredients}
             type="main"
             onClick={openIngredientsModal}
           />
         </div>
       </div>
+    </>) : ( <>
+        <p className={'text text_type_main-large text_color_inactive mt-15'}>Ингредиенты пока не загрузили...</p> </>
+      )}
       {isIngredientsOpened && (
         <Modal title="Детали ингредиента" onClose={closeModals}>
-          <IngredientDetails cardIngredient={cardIngredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </section>

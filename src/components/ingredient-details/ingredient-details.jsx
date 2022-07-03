@@ -1,7 +1,10 @@
 import styles from "./ingredient-details.module.css";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux"
 
-const IngredientDetails = ({ cardIngredient }) => {
+const IngredientDetails = () => {
+
+  const cardIngredient = useSelector(state => state.details.ingredientDetail);
+
   const categories = ["calories", "proteins", "fat", "carbohydrates"];
 
   const obj = {
@@ -35,10 +38,6 @@ const IngredientDetails = ({ cardIngredient }) => {
       </ul>
     </>
   );
-};
-
-IngredientDetails.propTypes = {
-  cardIngredient: PropTypes.object.isRequired,
 };
 
 export default IngredientDetails;
