@@ -20,26 +20,20 @@ export const getIngredients = () => {
 };
 
 const getIngredientsRequest = () => {
-  return function (dispatch) {
-    dispatch({
-      type: GET_INGREDIENTS_REQUEST,
-    });
+  return {
+    type: GET_INGREDIENTS_REQUEST,
   };
 };
 
 const getIngredientsSuccess = (data) => {
-  return function (dispatch) {
-    dispatch({
-      type: GET_INGREDIENTS_SUCCESS,
-      ingredients: data,
-    });
+  return {
+    type: GET_INGREDIENTS_SUCCESS,
+    ingredients: data,
   };
 };
 
 const getIngredientsFailed = () => {
-  return function (dispatch) {
-    dispatch({
-      type: GET_INGREDIENTS_FAILED,
-    });
+  return {
+    type: GET_INGREDIENTS_FAILED,
   };
 };

@@ -10,8 +10,7 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import IngredientsConstructor from "../ingredients-constructor/ingredients-constructor";
 
-import { getOrderFetch } from "../../utils/api";
-import { GET_ORDER_SUCCESS, DELETE_ORDER } from "../../services/actions/order";
+import { DELETE_ORDER, getOrder } from "../../services/actions/order";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -64,16 +63,11 @@ const BurgerConstructor = () => {
 
   const total = totalPrice(bun, ingredientsConstructor);
 
-  // открытие модального окна ордеров
+  // открытие модального окна ордера
   const handleOrderClick = () => {
-    getOrderFetch(idIngredients(ingredientsConstructor))
-      .then((res) => {
-        dispatch({ type: GET_ORDER_SUCCESS, data: res.order.number });
+    dispatch(getOrder(idIngredients(ingredientsConstructor)));
 
-        // открытие модального окна за счет изменения state
-        setOrderDetailsOpened(true);
-      })
-      .catch((err) => console.log(err));
+    setOrderDetailsOpened(true);
   };
 
   // Закрытие модального окна
@@ -148,15 +142,13 @@ const BurgerConstructor = () => {
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        {bun.length === 0 || ingredientsConstructor.length === 0 ? (
-          <Button type="primary" onClick={handleOrderClick} disabled>
-            Оформить заказ
-          </Button>
-        ) : (
-          <Button type="primary" onClick={handleOrderClick}>
-            Оформить заказ
-          </Button>
-        )}
+        <Button
+          type="primary"
+          onClick={handleOrderClick}
+          disabled={bun.length === 0 || ingredientsConstructor.length === 0}
+        >
+          Оформить заказ
+        </Button>
       </div>
       {isOrderDetailsOpened && (
         <Modal title="" onClose={closeModals}>
@@ -168,4 +160,3 @@ const BurgerConstructor = () => {
 };
 
 export default BurgerConstructor;
-// disabled={(bun.length === 0) || (ingredientsConstructor.length === 0)}
