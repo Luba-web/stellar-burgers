@@ -19,6 +19,6 @@ export const detailsReducer = (state = initialStateDetails, action) => {
       };
     }
     default:
-      return state
+      return state;
   }
 };

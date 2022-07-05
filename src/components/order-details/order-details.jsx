@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./order-details.module.css";
 import ready from "../../images/ready.svg";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
-  
-  const { order } = useSelector(state => state.order)
+  const { order } = useSelector((state) => state.order);
 
   return (
     <div className={styles.box}>

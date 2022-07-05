@@ -1,9 +1,8 @@
 import styles from "./ingredient-details.module.css";
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
 const IngredientDetails = () => {
-
-  const cardIngredient = useSelector(state => state.details.ingredientDetail);
+  const cardIngredient = useSelector((state) => state.details.ingredientDetail);
 
   const categories = ["calories", "proteins", "fat", "carbohydrates"];
 
