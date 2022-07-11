@@ -1,58 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styles from "./app.module.css";
+
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import getIngredientsDataServer from "../../utils/api";
+
+import { getIngredients } from "../../services/actions/ingredients.js";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
-  //стейт для Api
-  const [ingredients, setIngredients] = useState({
-    data: [],
-    isLoading: false,
-    hasError: false,
-    errorMessage: "",
-  });
+  const dispatch = useDispatch();
 
-  //Api запрос
-  const getIngredientsData = () => {
-    setIngredients({
-      ...ingredients,
-      isLoading: true,
-      hasError: false,
-    });
+  const { ingredientsRequest } = useSelector(
+    (state) => state.burgerIngredients
+  );
 
-    getIngredientsDataServer()
-      .then((res) =>
-        setIngredients({
-          ...ingredients,
-          data: res.data,
-          isLoading: false,
-        })
-      )
-
-      .catch((err) =>
-        setIngredients({
-          ...ingredients,
-          isLoading: false,
-          hasError: true,
-          errorMessage: err.message,
-        })
-      );
-  };
-
-  useEffect(getIngredientsData, []);
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <div className={styles.body}>
         <AppHeader />
-        {/* проверка есть ли массив */}
-        {ingredients.data.length > 0 && (
-          <main className={styles.container}>
-            <BurgerIngredients arrIngredients={ingredients.data} />
-            <BurgerConstructor arrIngredients={ingredients.data} />
-          </main>
+
+        {ingredientsRequest ? (
+          <>
+            <p
+              className={`${styles.failed} text text_type_main-large text_color_inactive mt-15`}
+            >
+              Готовим ингридиенты... еще чуть чуть...
+            </p>
+          </>
+        ) : (
+          <DndProvider backend={HTML5Backend}>
+            <main className={styles.container}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </main>
+          </DndProvider>
         )}
       </div>
     </>

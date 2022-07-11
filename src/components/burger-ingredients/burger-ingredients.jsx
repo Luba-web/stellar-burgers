@@ -1,19 +1,70 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import styles from "./burger-ingredients.module.css";
+
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
-import { ingredientPropType } from "../../utils/prop-types";
 import IngredientsCategory from "../ingredients-category/ingredients-category";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
-const BurgerIngredients = ({ arrIngredients }) => {
+import { useSelector, useDispatch } from "react-redux";
+import {
+  INGREDIENT_DETAILS,
+  DETAILS_REMOVE,
+} from "../../services/actions/details";
+import { useInView } from "react-hook-inview";
+
+const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+
+  const { ingredients } = useSelector((state) => state.burgerIngredients);
+
   const [current, setCurrent] = useState("bun"); //стейт для категорий
-  const [isIngredientsOpened, setIngredientsOpened] = useState(false); //стейт для ингридиента
-  const [cardIngredient, setCardIngredient] = useState({}); //стейт для выбранной карточки
-  
-  //прокрутка на категорию
+  const [isIngredientsOpened, setIngredientsOpened] = useState(false); //стейт для модального окна
+
+  //офильтровываем по type
+  const buns = useMemo(
+    () => ingredients.filter((i) => i.type === "bun"),
+    [ingredients]
+  );
+
+  const sauces = useMemo(
+    () => ingredients.filter((i) => i.type === "sauce"),
+    [ingredients]
+  );
+
+  const mains = useMemo(
+    () => ingredients.filter((i) => i.type === "main"),
+    [ingredients]
+  );
+
+  //прокрутка на категорию и по скролу
+  const [bunsRef, inViewBuns] = useInView({
+    threshold: 0.1,
+    trackVisibility: true,
+    delay: 150,
+  });
+  const [saucesRef, inViewSauces] = useInView({
+    threshold: 0.1,
+    trackVisibility: true,
+    delay: 150,
+  });
+  const [mainsRef, inViewMains] = useInView({
+    threshold: 0.1,
+    trackVisibility: true,
+    delay: 150,
+  });
+
+  useEffect(() => {
+    if (inViewBuns) {
+      setCurrent("bun");
+    } else if (inViewSauces) {
+      setCurrent("sauce");
+    } else if (inViewMains) {
+      setCurrent("main");
+    }
+  }, [inViewBuns, inViewSauces, inViewMains]);
+
   const scroll = (id) => {
     setCurrent(id);
     const section = document.getElementById(id);
@@ -21,20 +72,24 @@ const BurgerIngredients = ({ arrIngredients }) => {
   };
 
   //открытие модального окона ингридиентов
-  const openIngredientsModal = (item) => {
-    setCardIngredient(item);
+  const openIngredientsModal = (ingredient) => {
+    dispatch({
+      type: INGREDIENT_DETAILS,
+      data: ingredient,
+    });
     setIngredientsOpened(true);
   };
 
   // Закрытие модального окна
   const closeModals = () => {
     setIngredientsOpened(false);
+    dispatch({ type: DETAILS_REMOVE });
   };
-  
+
   return (
     <section className="mt-10 mr-10">
       <h2 className="text text_type_main-large pb-5">Соберите бургер</h2>
-      <nav style={{ display: "flex" }}>
+      <nav className={styles.navIngredients}>
         <Tab
           value="bun"
           active={current === "bun"}
@@ -57,40 +112,59 @@ const BurgerIngredients = ({ arrIngredients }) => {
           Начинки
         </Tab>
       </nav>
-      <div className={styles.block}>
-        <div id={"bun"}>
-          <IngredientsCategory
-            element={arrIngredients}
-            type="bun"
-            onClick={openIngredientsModal}
-          />
+      {ingredients !== undefined ? (
+        <div className={styles.block}>
+          <h2 className="text text_type_main-medium pt-10" id={"bun"}>
+            Булки
+          </h2>
+          <ul className={`${styles.list}`} ref={bunsRef}>
+            {buns.map((elem) => (
+              <IngredientsCategory
+                elem={elem}
+                onClick={openIngredientsModal}
+                key={elem._id}
+              />
+            ))}
+          </ul>
+          <h2 className="text text_type_main-medium pt-10" id={"sauce"}>
+            Соусы
+          </h2>
+          <ul className={`${styles.list}`} ref={saucesRef}>
+            {sauces.map((elem) => (
+              <IngredientsCategory
+                elem={elem}
+                onClick={openIngredientsModal}
+                key={elem._id}
+              />
+            ))}
+          </ul>
+          <h2 className="text text_type_main-medium pt-10" id={"main"}>
+            Начинки
+          </h2>
+          <ul className={`${styles.list}`} ref={mainsRef}>
+            {mains.map((elem) => (
+              <IngredientsCategory
+                elem={elem}
+                onClick={openIngredientsModal}
+                key={elem._id}
+              />
+            ))}
+          </ul>
         </div>
-        <div id={"sauce"}>
-          <IngredientsCategory
-            element={arrIngredients}
-            type="sauce"
-            onClick={openIngredientsModal}
-          />
-        </div>
-        <div id={"main"}>
-          <IngredientsCategory
-            element={arrIngredients}
-            type="main"
-            onClick={openIngredientsModal}
-          />
-        </div>
-      </div>
+      ) : (
+        <>
+          <p className={"text text_type_main-large text_color_inactive mt-15"}>
+            Ингредиенты пока не загрузили...
+          </p>{" "}
+        </>
+      )}
       {isIngredientsOpened && (
         <Modal title="Детали ингредиента" onClose={closeModals}>
-          <IngredientDetails data={cardIngredient} />
+          <IngredientDetails />
         </Modal>
       )}
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  arrIngredients: PropTypes.arrayOf(ingredientPropType).isRequired,
 };
 
 export default BurgerIngredients;
