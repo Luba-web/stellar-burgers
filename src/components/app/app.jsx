@@ -1,51 +1,38 @@
 import React, { useEffect } from "react";
-import styles from "./app.module.css";
+import { Route, Switch, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getIngredients } from "../../services/actions/ingredients";
 
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-
-import { getIngredients } from "../../services/actions/ingredients.js";
-
-import { useDispatch, useSelector } from "react-redux";
-
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { Home, Login } from "../../pages";
+import styles from "./app.module.css";
 
 function App() {
   const dispatch = useDispatch();
-
-  const { ingredientsRequest } = useSelector(
-    (state) => state.burgerIngredients
-  );
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
-  return (
-    <>
-      <div className={styles.body}>
-        <AppHeader />
+  const close = () => {
+    history.replace({ pathname: "/" });
+  };
 
-        {ingredientsRequest ? (
-          <>
-            <p
-              className={`${styles.failed} text text_type_main-large text_color_inactive mt-15`}
-            >
-              Готовим ингридиенты... еще чуть чуть...
-            </p>
-          </>
-        ) : (
-          <DndProvider backend={HTML5Backend}>
-            <main className={styles.container}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </main>
-          </DndProvider>
-        )}
-      </div>
-    </>
+  console.log(close);
+
+  return (
+    <div className={styles.body}>
+      <AppHeader />
+      <Switch>
+        <Route path="/" exact>
+          <Home />
+        </Route>
+        <Route path="/login" exact>
+          <Login />
+        </Route>
+      </Switch>
+    </div>
   );
 }
 
