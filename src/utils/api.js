@@ -1,3 +1,5 @@
+import { getCookie } from "./cookie";
+
 const URL = "https://norma.nomoreparties.space/api";
 
 const checkStatus = (res) =>
@@ -23,20 +25,109 @@ export const postOrderFetch = (ingredientsId) => {
   }).then((res) => checkStatus(res));
 };
 
-//запрос о пользователе
-export const getUserInfoFetch = () => {
-  return fetch(`${URL}/auth/user`).then((res) => checkStatus(res));
+//forgot-password
+export const postForgotPasswordFetch = (email) => {
+  return fetch(`${URL}/password-reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  }).then((res) => checkStatus(res));
 };
 
-//авторизация пользователя
-export const postUserFetch = (data) => {
+//reset-password
+export const postResetPasswordFetch = (password, token) => {
+  return fetch(`${URL}/password-reset/reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password: password, token: token }),
+  }).then((res) => checkStatus(res));
+};
+
+//авторизация пользователя /login
+export const postLoginFetch = (email, password) => {
   return fetch(`${URL}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      data: data,
+      email: email,
+      password: password,
+    }),
+  }).then((res) => checkStatus(res));
+};
+
+//регистрация пользователя /register
+export const postUserRegisterFetch = (name, email, password) => {
+  return fetch(`${URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      password: password,
+    }),
+  }).then((res) => checkStatus(res));
+};
+
+//выход пользователя /logout
+export const postLogoutFetch = () => {
+  return fetch(`${URL}/auth/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("token"),
+    }),
+  }).then((res) => checkStatus(res));
+};
+
+//запрос информации о пользователе
+export const getUserInfoFetch = () => {
+  return fetch(`${URL}/auth/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie("token"),
+    },
+  }).then((res) => checkStatus(res));
+};
+
+//запрос обновления для пользователя
+export const patchUserFetch = (name, email, password) => {
+  return fetch(`${URL}/auth/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie("token"),
+    },
+    body: JSON.stringify({
+      name: name,
+      email: email,
+      password: password,
+    }),
+  }).then((res) => checkStatus(res));
+};
+
+//обновление токена /token
+export const postTokenFetch = () => {
+  return fetch(`${URL}/auth/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie("token"),
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("token"),
     }),
   }).then((res) => checkStatus(res));
 };

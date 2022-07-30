@@ -79,7 +79,7 @@ const BurgerIngredients = () => {
     });
     setIngredientsOpened(true);
   };
-
+  //как теперь убирать dispatch({ type: DETAILS_REMOVE })?
   // Закрытие модального окна
   const closeModals = () => {
     setIngredientsOpened(false);
@@ -158,11 +158,11 @@ const BurgerIngredients = () => {
           </p>{" "}
         </>
       )}
-      {isIngredientsOpened && (
+      {/* {isIngredientsOpened && (
         <Modal title="Детали ингредиента" onClose={closeModals}>
           <IngredientDetails />
         </Modal>
-      )}
+      )} */}
     </section>
   );
 };

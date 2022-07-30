@@ -1,0 +1,32 @@
+.content {
+  margin: 0 auto;
+  max-width: 1280px;
+  min-height: 88px;
+  display: grid;
+  grid-template-columns: 35% 480px 35%;
+  margin-top: 120px;
+}
+
+.nav {
+  width: 320px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: block;
+  margin: 0;
+  padding: 18px 0;
+  color: var(--text-inactive-color);
+  text-decoration: none;
+}
+
+.link__active {
+  color: #f2f2f3;
+  text-decoration: none;
+}
+
+.text {
+  color: #f2f2f3;
+}

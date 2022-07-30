@@ -10,7 +10,7 @@ import {
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 function AppHeader() {
-  const { pathname } = useLocation();
+  const location = useLocation();
 
   return (
     <header className={styles.header}>
@@ -18,14 +18,34 @@ function AppHeader() {
         <ul className={styles.header__ul}>
           <li className={`${styles.header__li} pt-4 pb-4`}>
             <NavLink to="/" className={styles.header__link} exact>
-              <BurgerIcon type="primary" />
-              <p className="pl-2 text text_type_main-default">Конструктор</p>
+              <BurgerIcon
+                type={location.pathname === "/" ? "primary" : "secondary"}
+              />
+              <p
+                className={
+                  location.pathname === "/"
+                    ? "pl-2 text text_type_main-default"
+                    : "pl-2 text text_type_main-default text_color_inactive"
+                }
+              >
+                Конструктор
+              </p>
             </NavLink>
           </li>
           <li className={`${styles.header__li} pt-4 pb-4`}>
             <NavLink to="/order-list" className={styles.header__link}>
-              <ListIcon type="secondary" />
-              <p className="pl-2 text text_type_main-default text_color_inactive">
+              <ListIcon
+                type={
+                  location.pathname === "/order-list" ? "primary" : "secondary"
+                }
+              />
+              <p
+                className={
+                  location.pathname === "/order-list"
+                    ? "pl-2 text text_type_main-default"
+                    : "pl-2 text text_type_main-default text_color_inactive"
+                }
+              >
                 Лента заказов
               </p>
             </NavLink>
@@ -33,7 +53,7 @@ function AppHeader() {
         </ul>
 
         <div className={styles.logo}>
-          {pathname === "/" ? (
+          {location.pathname === "/" ? (
             <Logo />
           ) : (
             <Link to="/">
@@ -43,8 +63,16 @@ function AppHeader() {
         </div>
 
         <NavLink to="/profile" className={`${styles.header__btn} mr-10`}>
-          <ProfileIcon type="secondary" />
-          <p className="pl-2 text text_type_main-default text_color_inactive">
+          <ProfileIcon
+            type={location.pathname === "/profile" ? "primary" : "secondary"}
+          />
+          <p
+            className={
+              location.pathname === "/profile"
+                ? "pl-2 text text_type_main-default"
+                : "pl-2 text text_type_main-default text_color_inactive"
+            }
+          >
             Личный кабинет
           </p>
         </NavLink>

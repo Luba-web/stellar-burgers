@@ -9,8 +9,9 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import { useDrag } from "react-dnd";
+import { useLocation, Link } from "react-router-dom";
 
-function IngredientsCategory({ elem, onClick }) {
+const IngredientsCategory = ({ elem, onClick }) => {
   const { bun, ingredientsConstructor } = useSelector((state) => state.dnd);
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -37,26 +38,38 @@ function IngredientsCategory({ elem, onClick }) {
     [bun, ingredientsConstructor, elem._id]
   );
 
+  const location = useLocation();
+
   return (
-    <li
-      className={`${styles.item} mt-6 ml-4 mr-6`}
-      key={elem._id}
-      onClick={() => onClick(elem)}
-      ref={dragRef}
-      style={{ opacity }}
+    <Link
+      to={{
+        pathname: `/ingredients/${elem._id}`,
+        state: { background: location },
+      }}
+      className={styles.link}
     >
-      <img src={elem.image} alt={elem.name} />
-      <div className={`${styles.priceTitle} pt-1 pb-1`}>
-        <p className="text text_type_digits-default mr-2">{elem.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p className="text text_type_main-default">{elem.name}</p>
-      <div className={`${styles.count}`}>
-        {counter() > 0 && <Counter count={counter()} size="default" />}
-      </div>
-    </li>
+      <>
+        <li
+          className={`${styles.item} mt-6 ml-4 mr-6`}
+          key={elem._id}
+          onClick={() => onClick(elem)}
+          ref={dragRef}
+          style={{ opacity }}
+        >
+          <img src={elem.image} alt={elem.name} />
+          <div className={`${styles.priceTitle} pt-1 pb-1`}>
+            <p className="text text_type_digits-default mr-2">{elem.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
+          <p className="text text_type_main-default">{elem.name}</p>
+          <div className={`${styles.count}`}>
+            {counter() > 0 && <Counter count={counter()} size="default" />}
+          </div>
+        </li>
+      </>
+    </Link>
   );
-}
+};
 
 IngredientsCategory.propTypes = {
   elem: PropTypes.object.isRequired,

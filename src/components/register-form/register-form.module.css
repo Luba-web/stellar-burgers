@@ -1,4 +1,4 @@
-.login__content {
+.register__content {
   text-align: center;
   width: 100%;
   max-width: 480px;
@@ -10,21 +10,21 @@
   right: 0;
 }
 
-.login__input {
+.register__input {
   margin-bottom: 24px;
   min-height: 64px;
   width: 100%;
 }
 
-.login__input div {
+.register__input div {
   width: 100%;
   text-align: right;
 }
 
-.login__link {
+.register__link {
   text-decoration: none;
   color: #4c4cff;
 }
-.login__link:hover {
+.register__link:hover {
   color: #7c7cff;
 }

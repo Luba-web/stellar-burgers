@@ -1,33 +1,54 @@
-import React from "react";
+import { React, useState } from "react";
 import styles from "./login-form.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation, Redirect } from "react-router-dom";
 import {
   PasswordInput,
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDispatch, useSelector } from "react-redux";
+import { postUserLogin } from "../../services/actions/user";
 
 const LoginForm = () => {
-  const [valuePass, setValuePass] = React.useState("");
-  const [valueEmail, setValueEmail] = React.useState("");
+  const dispatch = useDispatch();
+
+  const [valueLogin, setValueLogin] = useState("");
+  const [valuePass, setValuePass] = useState("");
+
+  const { loginRequest } = useSelector((store) => store.user);
+  const { user } = useSelector((store) => store.user);
 
   const handleChange = (e, setValue) => {
     setValue(e.target.value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (valueLogin.length > 3 && valuePass.length > 3) {
+      dispatch(postUserLogin(valueLogin, valuePass));
+    }
+  };
+
+  let location = useLocation();
+
+  if (user) {
+    return <Redirect to={location.state?.from || "/"} />;
+  }
+
   return (
     <div className={styles.login__content}>
-      <h2 className="text text_type_main-medium">Вход</h2>
-      <form className="mb-20">
-        <Input
-          onChange={(e) => {
-            handleChange(e, setValueEmail);
-          }}
-          value={valueEmail}
-          name={"email"}
-          size={"default"}
-        />
-
+      <h2 className="text text_type_main-medium mb-6">Вход</h2>
+      <form className="mb-20" onSubmit={handleSubmit}>
+        <div className={`${styles.login__input} mt-6`}>
+          <Input
+            onChange={(e) => {
+              handleChange(e, setValueLogin);
+            }}
+            placeholder={"Email"}
+            value={valueLogin}
+            name={"email"}
+          />
+        </div>
         <div className={`${styles.login__input} mt-6`}>
           <PasswordInput
             onChange={(e) => {
@@ -35,27 +56,30 @@ const LoginForm = () => {
             }}
             value={valuePass}
             name={"password"}
-            size="undefined"
           />
         </div>
         <Button
           type="primary"
-          size="small"
+          size="medium"
           htmlType="submit"
           className={`text text_type_main-small mt-6`}
         >
-          Войти
+          {!loginRequest ? "Войти" : "Вход..."}
         </Button>
       </form>
 
-      <div>
-        <p className="text text_type_main-default text_color_inactive">
-          Вы - новый пользователь?{" "}
-          <Link to={`/register`}>Зарегистрироваться</Link>
-        </p>
-      </div>
       <p className="text text_type_main-default text_color_inactive">
-        Забыли пароль? <Link to={`/forgot-password`}>Восстановить пароль</Link>
+        Вы - новый пользователь?{" "}
+        <Link to={`/register`} className={styles.login__link}>
+          Зарегистрироваться
+        </Link>
+      </p>
+
+      <p className="text text_type_main-default text_color_inactive">
+        Забыли пароль?{" "}
+        <Link to={`/forgot-password`} className={styles.login__link}>
+          Восстановить пароль
+        </Link>
       </p>
     </div>
   );
