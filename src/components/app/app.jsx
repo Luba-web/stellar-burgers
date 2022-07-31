@@ -12,7 +12,7 @@ import {
   ForgotPassword,
   ResetPassword,
   Profile,
-  //Ingredient, нужен ли он????
+  IngredientPage,
 } from "../../pages";
 import styles from "./app.module.css";
 import { getCookie } from "../../utils/cookie";
@@ -53,11 +53,14 @@ const App = () => {
 
   const closeModal = () => {
     history.goBack();
-    dispatch({ type: DETAILS_REMOVE }); //можно ли передать тут для удаления если убрать в бургер ингридиент закрытие модалки????
+    dispatch({ type: DETAILS_REMOVE });
   };
 
   const location = useLocation();
-  const background = location.state && location.state.background;
+
+  const historyAction = history.action === "PUSH";
+  const background =
+    historyAction && location.state && location.state.background;
 
   return (
     <div className={styles.body}>
@@ -82,7 +85,7 @@ const App = () => {
           <Profile />
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact>
-          <IngredientDetails />
+          <IngredientPage />
         </Route>
         <Route path="*">404</Route>
       </Switch>

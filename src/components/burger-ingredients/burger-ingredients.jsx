@@ -4,14 +4,9 @@ import styles from "./burger-ingredients.module.css";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsCategory from "../ingredients-category/ingredients-category";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import { useSelector, useDispatch } from "react-redux";
-import {
-  INGREDIENT_DETAILS,
-  DETAILS_REMOVE,
-} from "../../services/actions/details";
+import { INGREDIENT_DETAILS } from "../../services/actions/details";
 import { useInView } from "react-hook-inview";
 
 const BurgerIngredients = () => {
@@ -78,12 +73,6 @@ const BurgerIngredients = () => {
       data: ingredient,
     });
     setIngredientsOpened(true);
-  };
-  //как теперь убирать dispatch({ type: DETAILS_REMOVE })?
-  // Закрытие модального окна
-  const closeModals = () => {
-    setIngredientsOpened(false);
-    dispatch({ type: DETAILS_REMOVE });
   };
 
   return (
@@ -158,11 +147,6 @@ const BurgerIngredients = () => {
           </p>{" "}
         </>
       )}
-      {/* {isIngredientsOpened && (
-        <Modal title="Детали ингредиента" onClose={closeModals}>
-          <IngredientDetails />
-        </Modal>
-      )} */}
     </section>
   );
 };

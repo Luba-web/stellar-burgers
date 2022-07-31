@@ -1,9 +1,9 @@
 //страница ингредиента
 import React from "react";
-import styles from "./ingredient.module.css";
+import styles from "./ingredient-page.module.css";
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 
-const Ingredient = () => {
+const IngredientPage = () => {
   return (
     <div className={styles.container}>
       <IngredientDetails />
@@ -11,4 +11,4 @@ const Ingredient = () => {
   );
 };
 
-export default Ingredient;
+export default IngredientPage;
