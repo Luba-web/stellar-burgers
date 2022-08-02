@@ -13,6 +13,7 @@ import {
   ResetPassword,
   Profile,
   IngredientPage,
+  NotFound,
 } from "../../pages";
 import styles from "./app.module.css";
 import { getCookie } from "../../utils/cookie";
@@ -26,14 +27,12 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const user = useSelector((store) => store.user.user);
-  //console.log("userApp", user);
-
-  const cookie = getCookie("token");
+  const location = useLocation();
 
   const refreshToken = localStorage.getItem("token");
-  const tokenSuccess = useSelector((store) => store.user.user);
+  const { user, tokenSuccess } = useSelector((store) => store.user);
+
+  const cookie = getCookie("token");
 
   useEffect(() => {
     if (!user && refreshToken && cookie) {
@@ -56,11 +55,7 @@ const App = () => {
     dispatch({ type: DETAILS_REMOVE });
   };
 
-  const location = useLocation();
-
-  const historyAction = history.action === "PUSH";
-  const background =
-    historyAction && location.state && location.state.background;
+  const background = location.state?.background;
 
   return (
     <div className={styles.body}>
@@ -87,7 +82,9 @@ const App = () => {
         <Route path="/ingredients/:id" exact>
           <IngredientPage />
         </Route>
-        <Route path="*">404</Route>
+        <Route path="*">
+          <NotFound />
+        </Route>
       </Switch>
       {background && (
         <Route path="/ingredients/:id">

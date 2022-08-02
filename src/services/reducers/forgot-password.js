@@ -7,6 +7,7 @@ import {
 const initialResetPassword = {
   forgotPasswordRequest: false,
   forgotPasswordFailed: false,
+  forgotPasswordSuccess: false,
 };
 
 export const forgotPasswordReducer = (state = initialResetPassword, action) => {
@@ -23,6 +24,7 @@ export const forgotPasswordReducer = (state = initialResetPassword, action) => {
         ...state,
         forgotPasswordFailed: false,
         forgotPasswordRequest: false,
+        forgotPasswordSuccess: true,
       };
     }
     case FORGOT_PASSWORD_FAILED: {

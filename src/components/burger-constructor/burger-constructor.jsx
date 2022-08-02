@@ -19,13 +19,15 @@ import {
   ADD_INGREDIENTS_CONSTRUCTOR,
   ADD_BUN,
 } from "../../services/actions/dnd";
+import { useHistory } from "react-router-dom";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [isOrderDetailsOpened, setOrderDetailsOpened] = useState(false); //стейт для ордера
 
-  const { bun, ingredientsConstructor } = useSelector((state) => state.dnd);
+  const { bun, ingredientsConstructor } = useSelector((store) => store.dnd);
 
   //добавление ингредиентов в конструктор
   const [, dropTarget] = useDrop({
@@ -62,12 +64,17 @@ const BurgerConstructor = () => {
   };
 
   const total = totalPrice(bun, ingredientsConstructor);
+  const user = useSelector((store) => store.user.user);
 
   // открытие модального окна ордера
   const handleOrderClick = () => {
-    dispatch(getOrder(idIngredients(ingredientsConstructor)));
-
-    setOrderDetailsOpened(true);
+    if (!user) {
+      history.replace("/login");
+    }
+    if (user) {
+      dispatch(getOrder(idIngredients(ingredientsConstructor)));
+      setOrderDetailsOpened(true);
+    }
   };
 
   // Закрытие модального окна

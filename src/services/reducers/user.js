@@ -20,7 +20,7 @@ import {
 } from "../actions/user";
 
 const initialStateUser = {
-  user: {},
+  user: null,
 
   userInfoRequest: false,
   userInfoFailed: false,

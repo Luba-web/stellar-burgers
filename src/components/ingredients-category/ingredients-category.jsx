@@ -12,7 +12,7 @@ import { useDrag } from "react-dnd";
 import { useLocation, Link } from "react-router-dom";
 
 const IngredientsCategory = ({ elem, onClick }) => {
-  const { bun, ingredientsConstructor } = useSelector((state) => state.dnd);
+  const { bun, ingredientsConstructor } = useSelector((store) => store.dnd);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "ingredients",

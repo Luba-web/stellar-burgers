@@ -7,18 +7,18 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-import { postUserForgotPassword } from "../../services/actions/user";
+import { forgotPassword } from "../../services/actions/forgot-password";
 
 const ForgotPasswordForm = () => {
   const dispatch = useDispatch();
 
-  const { forgotPasswordRequest, forgotPasswordFailed } = useSelector(
+  const { forgotPasswordSuccess, forgotPasswordRequest } = useSelector(
     (store) => store.forgotPassword
   );
 
   const [valueEmail, setValueEmail] = useState("");
 
-  const { user } = useSelector((store) => store.user);
+  const user = useSelector((store) => store.user.user);
 
   const handleChange = (e, setValue) => {
     setValue(e.target.value);
@@ -26,16 +26,14 @@ const ForgotPasswordForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (valueEmail.length > 5) {
-      dispatch(postUserForgotPassword(valueEmail));
-    }
+    dispatch(forgotPassword(valueEmail));
   };
 
   if (user) {
     return <Redirect to="/" />;
   }
 
-  if (forgotPasswordRequest === false || forgotPasswordFailed === false) {
+  if (forgotPasswordSuccess === true) {
     return (
       <Redirect
         to={{
@@ -48,7 +46,7 @@ const ForgotPasswordForm = () => {
   return (
     <div className={styles.forgot__content}>
       <h2 className="text text_type_main-medium mb-6">Восстановление пароля</h2>
-      <form className="mb-20" onClick={handleSubmit}>
+      <form className="mb-20" onSubmit={handleSubmit}>
         <div className={`${styles.forgot__input} mt-6`}>
           <Input
             onChange={(e) => {
@@ -59,16 +57,13 @@ const ForgotPasswordForm = () => {
             name={"email"}
           />
         </div>
-        <Link to={`/reset-password`}>
-          <Button
-            type="primary"
-            size="medium"
-            htmlType="submit"
-            className={`text text_type_main-small mt-6`}
-          >
-            Восстановить
-          </Button>
-        </Link>
+        <Button
+          type="primary"
+          size="medium"
+          className={`text text_type_main-small mt-6`}
+        >
+          {!forgotPasswordRequest ? "Восстановить" : "Восстановление...."}
+        </Button>
       </form>
 
       <p className="text text_type_main-default text_color_inactive">

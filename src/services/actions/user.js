@@ -102,7 +102,6 @@ export function postUserRegister(name, email, password) {
 //запрос о пользователе
 export const getUserInfo = () => {
   return (dispatch) => {
-    console.log("запрос о пользователе");
     dispatch({
       type: USER_INFO_REQUEST,
     });
@@ -130,6 +129,7 @@ export const getUserInfo = () => {
 
 // Обновление токена
 export const postToken = () => {
+  console.log("action post");
   return (dispatch) => {
     dispatch({
       type: UPDATE_TOKEN_REQUEST,
@@ -166,9 +166,9 @@ export const postLogout = () => {
 
     postLogoutFetch()
       .then((res) => {
+        localStorage.removeItem("token");
         deleteCookie("token");
         if (res && res.success) {
-          localStorage.removeItem("token");
           dispatch({
             type: POST_LOGOUT_SUCCESS,
             payload: null,
@@ -216,5 +216,3 @@ export const patchUser = (name, email, password) => {
       });
   };
 };
-
-export const postUserForgotPassword = () => {};

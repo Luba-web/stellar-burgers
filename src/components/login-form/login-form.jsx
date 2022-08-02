@@ -15,8 +15,8 @@ const LoginForm = () => {
   const [valueLogin, setValueLogin] = useState("");
   const [valuePass, setValuePass] = useState("");
 
+  const user = useSelector((store) => store.user.user);
   const { loginRequest } = useSelector((store) => store.user);
-  const { user } = useSelector((store) => store.user);
 
   const handleChange = (e, setValue) => {
     setValue(e.target.value);
@@ -41,10 +41,11 @@ const LoginForm = () => {
       <form className="mb-20" onSubmit={handleSubmit}>
         <div className={`${styles.login__input} mt-6`}>
           <Input
+            type={"email"}
             onChange={(e) => {
               handleChange(e, setValueLogin);
             }}
-            placeholder={"Email"}
+            placeholder={"E-mail"}
             value={valueLogin}
             name={"email"}
           />

@@ -1,21 +1,25 @@
+import { useEffect } from "react";
 import styles from "./ingredient-details.module.css";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 
 const IngredientDetails = () => {
   const { id } = useParams();
 
-  const { ingredients } = useSelector((state) => state.burgerIngredients);
-  const cardIngredient = useSelector((state) => state.details.ingredientDetail);
+  const { ingredients } = useSelector((store) => store.burgerIngredients);
 
   const categories = ["calories", "proteins", "fat", "carbohydrates"];
 
-  let activeIngredient;
-  if (id) {
-    activeIngredient = ingredients.find((item) => item._id === id);
-  } else {
-    activeIngredient = cardIngredient;
-  }
+  let activeIngredient = ingredients.find((item) => item._id === id);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!activeIngredient) {
+      history.replace(`/ingredients/${id}`);
+    }
+  }, [dispatch, activeIngredient, history, id]);
 
   const obj = {
     calories: "Калории,ккал",

@@ -6,7 +6,7 @@ import styles from "./home.module.css";
 
 const Home = () => {
   const { ingredientsRequest } = useSelector(
-    (state) => state.burgerIngredients
+    (store) => store.burgerIngredients
   );
 
   return ingredientsRequest ? (

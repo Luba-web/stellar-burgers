@@ -25,16 +25,16 @@ const RegisterForm = () => {
     dispatch(postUserRegister(valueName, valueEmail, valuePassword));
   };
 
-  const { user } = useSelector((store) => store.user);
+  const user = useSelector((store) => store.user.user);
 
   if (user) {
-    return <Redirect to="/" />;
+    return <Redirect to="/login" />;
   }
 
   return (
     <div className={styles.register__content}>
       <h2 className="text text_type_main-medium mb-6">Регистрация</h2>
-      <form className="mb-20" onClick={handleSubmit}>
+      <form className="mb-20" onSubmit={handleSubmit}>
         <div className={`${styles.register__input} mt-6`}>
           <Input
             onChange={(e) => {
@@ -43,6 +43,7 @@ const RegisterForm = () => {
             placeholder={"Name"}
             value={valueName}
             name={"name"}
+            type={"text"}
           />
         </div>
         <div className={`${styles.register__input} mt-6`}>
@@ -53,6 +54,7 @@ const RegisterForm = () => {
             placeholder={"Email"}
             value={valueEmail}
             name={"email"}
+            type={"email"}
           />
         </div>
         <div className={`${styles.register__input} mt-6`}>

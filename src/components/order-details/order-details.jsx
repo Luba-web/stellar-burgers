@@ -4,7 +4,7 @@ import ready from "../../images/ready.svg";
 import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
-  const { order } = useSelector((state) => state.order);
+  const { order } = useSelector((store) => store.order);
 
   return (
     <div className={styles.box}>

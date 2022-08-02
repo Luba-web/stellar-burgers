@@ -1,16 +1,24 @@
 import React from "react";
 import styles from "./profile-menu.module.css";
-import { NavLink, useLocation, Link } from "react-router-dom";
+import { NavLink, useLocation, useHistory } from "react-router-dom";
 import ProfileForm from "../profile-form/profile-form";
 import { useDispatch } from "react-redux";
 import { postLogout } from "../../services/actions/user";
 
 const ProfileMenu = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const handlerLogout = (e) => {
-    e.preventDefault();
+  const handlerLogout = () => {
     dispatch(postLogout());
+    history.replace({
+      pathname: "/",
+      state: {
+        from: {
+          pathname: "/",
+        },
+      },
+    });
   };
 
   const location = useLocation();

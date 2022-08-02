@@ -12,7 +12,7 @@ import { useInView } from "react-hook-inview";
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
 
-  const { ingredients } = useSelector((state) => state.burgerIngredients);
+  const { ingredients } = useSelector((store) => store.burgerIngredients);
 
   const [current, setCurrent] = useState("bun"); //стейт для категорий
   const [isIngredientsOpened, setIngredientsOpened] = useState(false); //стейт для модального окна

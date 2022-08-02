@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import styles from "./reset-password-form.module.css";
 import { Link, Redirect } from "react-router-dom";
 import {
@@ -12,16 +12,16 @@ import { postResetPassword } from "../../services/actions/reset-password";
 const ResetPasswordForm = () => {
   const dispatch = useDispatch();
 
-  const [valuePass, setValuePass] = React.useState("");
-  const [valueToken, setValueToken] = React.useState("");
+  const [valuePass, setValuePass] = useState("");
+  const [valueToken, setValueToken] = useState("");
 
-  const { user } = useSelector((store) => store.user);
+  const user = useSelector((store) => store.user.user);
 
-  const { resetPasswordRequest, resetPasswordFailed } = useSelector(
+  const { resetPasswordSuccess, resetPasswordFailed } = useSelector(
     (store) => store.resetPassword
   );
-  const { forgotPasswordRequest, forgotPasswordFailed } = useSelector(
-    (store) => store.forgotPassword
+  const forgotPasswordSuccess = useSelector(
+    (store) => store.forgotPassword.forgotPasswordSuccess
   );
 
   const handleChange = (e, setValue) => {
@@ -37,7 +37,7 @@ const ResetPasswordForm = () => {
     return <Redirect to="/" />;
   }
 
-  if (forgotPasswordRequest === false && forgotPasswordFailed === false) {
+  if (forgotPasswordSuccess === false) {
     return (
       <Redirect
         to={{
@@ -47,7 +47,7 @@ const ResetPasswordForm = () => {
     );
   }
 
-  if (resetPasswordRequest === false && resetPasswordFailed === false) {
+  if (resetPasswordSuccess === true) {
     return (
       <Redirect
         to={{
@@ -87,11 +87,11 @@ const ResetPasswordForm = () => {
           htmlType="submit"
           className={`text text_type_main-small mt-6`}
         >
-          {!resetPasswordRequest ? "Сохранить" : "Сохранение..."}
+          {!resetPasswordSuccess ? "Сохранить" : "Сохранение..."}
         </Button>
         {resetPasswordFailed && (
           <div className="text text_type_main-default text_color_error mt-2">
-            {resetPasswordFailed}
+            Ошибка сброса пароля
           </div>
         )}
       </form>
