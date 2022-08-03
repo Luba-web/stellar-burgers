@@ -1,4 +1,6 @@
 import { postOrderFetch } from "../../utils/api";
+//сброс набраных ингредиентов в конструторе
+import { RESET_ELEMENT } from "../actions/dnd.js";
 
 /*Экшены для ордеров */
 export const GET_ORDER_REQUEST = "GET_ORDER_REQUEST";
@@ -12,6 +14,11 @@ export function getOrder(id) {
     postOrderFetch(id)
       .then((res) => {
         dispatch(getOrderSuccess(res));
+      })
+      .then((res) => {
+        dispatch({
+          type: RESET_ELEMENT,
+        });
       })
       .catch((err) => {
         dispatch(getOrderFailed());

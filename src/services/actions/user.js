@@ -4,7 +4,7 @@ import {
   getUserInfoFetch,
   postTokenFetch,
   postLogoutFetch,
-  patchUserFetch,
+  changeUserFetch,
 } from "../../utils/api";
 import { setCookie, deleteCookie } from "../../utils/cookie";
 
@@ -39,6 +39,20 @@ export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
 export const PROFILE_FAILED = "PROFILE_FAILED";
 
 //Вход в личный кабинет
+function loginSuccess(res) {
+  return {
+    type: USER_LOGIN_SUCCESS,
+    payload: res.user,
+  };
+}
+
+function loginFailed(err) {
+  return {
+    type: USER_LOGIN_FAILED,
+    payload: `Ошибка входа пользователя: ${err.message}`,
+  };
+}
+
 export function postUserLogin(email, password) {
   return function (dispatch) {
     dispatch({
@@ -50,26 +64,30 @@ export function postUserLogin(email, password) {
         setCookie("token", authToken);
         localStorage.setItem("token", res.refreshToken);
         if (res && res.success) {
-          dispatch({
-            type: USER_LOGIN_SUCCESS,
-            payload: res.user,
-          });
+          dispatch(loginSuccess(res));
         } else {
-          dispatch({
-            type: USER_LOGIN_FAILED,
-          });
+          dispatch(loginFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: USER_LOGIN_FAILED,
-          payload: `Ошибка входа пользователя: ${err.message}`,
-        });
+        dispatch(loginFailed(err));
+        console.log(`Ошибка логина${err}`);
       });
   };
 }
 
-//регистрация
+//регистрация пользователя
+function registerSuccess(res) {
+  return { type: USER_REGISTER_SUCCESS, user: res.user };
+}
+
+function registerFailed(err) {
+  return {
+    type: USER_REGISTER_FAILED,
+    payload: `Ошибка регистрации пользователя: ${err.message}`,
+  };
+}
+
 export function postUserRegister(name, email, password) {
   return function (dispatch) {
     dispatch({
@@ -82,55 +100,56 @@ export function postUserRegister(name, email, password) {
 
         localStorage.setItem("token", res.refreshToken);
         if (res && res.success) {
-          dispatch({ type: USER_REGISTER_SUCCESS, user: res.user });
+          dispatch(registerSuccess(res));
         } else {
-          dispatch({
-            type: USER_REGISTER_FAILED,
-          });
+          dispatch(registerFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: USER_REGISTER_FAILED,
-          payload: `Ошибка регистрации пользователя: ${err.message}`,
-        });
-        console.log(`Ошибка ${err}`);
+        dispatch(registerFailed(err));
+        console.log(`Ошибка в регистрации${err}`);
       });
   };
 }
 
 //запрос о пользователе
-export const getUserInfo = () => {
-  return (dispatch) => {
+function userInfoSuccess(res) {
+  return {
+    type: USER_INFO_SUCCESS,
+    payload: res.user,
+  };
+}
+
+function userInfoFailed(err) {
+  return {
+    type: USER_INFO_FAILED,
+    payload: `Произошла ошибка запроса: ${err.message}, попробуйте снова!`,
+  };
+}
+
+export function getUserInfo() {
+  return function (dispatch) {
     dispatch({
       type: USER_INFO_REQUEST,
     });
     getUserInfoFetch()
       .then((res) => {
         if (res && res.success) {
-          dispatch({
-            type: USER_INFO_SUCCESS,
-            payload: res.user,
-          });
+          dispatch(userInfoSuccess(res));
         } else {
-          dispatch({
-            type: USER_INFO_FAILED,
-          });
+          dispatch(userInfoFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: USER_INFO_FAILED,
-          payload: `Произошла ошибка: ${err.message}, попробуйте снова!`,
-        });
+        dispatch(userInfoFailed(err));
+        console.log(`Ошибка в запросе пользователя${err}`);
       });
   };
-};
+}
 
 // Обновление токена
-export const postToken = () => {
-  console.log("action post");
-  return (dispatch) => {
+export function postToken() {
+  return function (dispatch) {
     dispatch({
       type: UPDATE_TOKEN_REQUEST,
     });
@@ -143,7 +162,6 @@ export const postToken = () => {
           dispatch({
             type: UPDATE_TOKEN_SUCCESS,
           });
-        } else {
         }
       })
       .catch((err) => {
@@ -151,15 +169,29 @@ export const postToken = () => {
           type: UPDATE_TOKEN_FAILED,
           payload: `Ошибка обновления токена: ${err.message}`,
         });
-
+        console.log(`Ошибка обновления токена ${err}`);
         throw new Error(err);
       });
   };
-};
+}
 
-// Выход из системы
-export const postLogout = () => {
-  return (dispatch) => {
+// Выход из системы профиля
+function logoutSuccess(res) {
+  return {
+    type: POST_LOGOUT_SUCCESS,
+    payload: null,
+  };
+}
+
+function logoutFailed(err) {
+  return {
+    type: POST_LOGOUT_FAILED,
+    payload: `Ошибка выхода из вашего профиля: ${err.message}`,
+  };
+}
+
+export function postLogout() {
+  return function (dispatch) {
     dispatch({
       type: POST_LOGOUT_REQUEST,
     });
@@ -169,50 +201,49 @@ export const postLogout = () => {
         localStorage.removeItem("token");
         deleteCookie("token");
         if (res && res.success) {
-          dispatch({
-            type: POST_LOGOUT_SUCCESS,
-            payload: null,
-          });
+          dispatch(logoutSuccess(res));
         } else {
-          dispatch({
-            type: POST_LOGOUT_FAILED,
-          });
+          dispatch(logoutFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: POST_LOGOUT_FAILED,
-          payload: `Ошибка выхода из вашего профиля: ${err.message}`,
-        });
+        dispatch(logoutFailed(err));
+        console.log(`Ошибка выхода из профиля пользователя${err}`);
       });
   };
-};
+}
 
 //изменения данных пользователя
-export const patchUser = (name, email, password) => {
-  return (dispatch) => {
+function changeUserSuccess(res) {
+  return {
+    type: PROFILE_SUCCESS,
+    payload: "Данные успешно изменились!",
+  };
+}
+
+function changeUserFailed(err) {
+  return {
+    type: PROFILE_FAILED,
+    payload: `Произошла ошибка:  ${err.message}!`,
+  };
+}
+
+export function changeUser(name, email, password) {
+  return function (dispatch) {
     dispatch({
       type: PROFILE_REQUEST,
     });
 
-    patchUserFetch(name, email, password)
+    changeUserFetch(name, email, password)
       .then((res) => {
         if (res && res.success) {
-          dispatch({
-            type: PROFILE_SUCCESS,
-            payload: "Данные успешно изменились!",
-          });
+          dispatch(changeUserSuccess(res));
         } else {
-          dispatch({
-            type: PROFILE_FAILED,
-          });
+          dispatch(changeUserFailed());
         }
       })
       .catch((err) => {
-        dispatch({
-          type: PROFILE_FAILED,
-          payload: `Произошла ошибка:  ${err.message}!`,
-        });
+        dispatch(changeUserFailed(err));
       });
   };
-};
+}

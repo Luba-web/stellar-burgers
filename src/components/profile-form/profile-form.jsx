@@ -5,7 +5,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { patchUser } from "../../services/actions/user";
+import { changeUser } from "../../services/actions/user";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const ProfileForm = () => {
   //сохранение изменений
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(patchUser(state.name, state.email, state.password));
+    dispatch(changeUser(state.name, state.email, state.password));
   };
 
   //отмена изменений

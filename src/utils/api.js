@@ -103,7 +103,7 @@ export const getUserInfoFetch = () => {
 };
 
 //запрос обновления для пользователя
-export const patchUserFetch = (name, email, password) => {
+export const changeUserFetch = (name, email, password) => {
   return fetch(`${URL}/auth/user`, {
     method: "PATCH",
     headers: {

@@ -48,6 +48,7 @@ export const dndReducer = (state = initialStateDnd, action) => {
         ingredientsConstructor: dragConstructor,
       };
     }
+    //использую для сброса ингредиентов в конструторе в order.js
     case RESET_ELEMENT: {
       return {
         ...state,
