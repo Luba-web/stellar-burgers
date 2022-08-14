@@ -18,6 +18,7 @@ export const postOrderFetch = (ingredientsId) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie("token"),
     },
     body: JSON.stringify({
       ingredients: ingredientsId,

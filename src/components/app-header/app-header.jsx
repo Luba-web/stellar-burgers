@@ -33,15 +33,13 @@ function AppHeader() {
             </NavLink>
           </li>
           <li className={`${styles.header__li} pt-4 pb-4`}>
-            <NavLink to="/order-list" className={styles.header__link}>
+            <NavLink to="/feed" className={styles.header__link}>
               <ListIcon
-                type={
-                  location.pathname === "/order-list" ? "primary" : "secondary"
-                }
+                type={location.pathname === "/feed" ? "primary" : "secondary"}
               />
               <p
                 className={
-                  location.pathname === "/order-list"
+                  location.pathname === "/feed"
                     ? "pl-2 text text_type_main-default"
                     : "pl-2 text text_type_main-default text_color_inactive"
                 }

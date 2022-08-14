@@ -15,6 +15,7 @@ const IngredientDetails = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  //при обновлении или открытии через ссылку запоминает и открывает страницу
   useEffect(() => {
     if (!activeIngredient) {
       history.replace(`/ingredients/${id}`);

@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import { getUserInfo, postToken } from "../../services/actions/user";
 
 import AppHeader from "../app-header/app-header";
+import OrderInfoPage from "../order-info-page/order-info-page";
 import {
   Home,
   Login,
@@ -12,9 +13,13 @@ import {
   ForgotPassword,
   ResetPassword,
   Profile,
-  IngredientPage,
+  Ingredient,
   NotFound,
+  Feed,
+  ProfileHistory,
+  OrderInfo,
 } from "../../pages";
+
 import styles from "./app.module.css";
 import { getCookie } from "../../utils/cookie";
 
@@ -76,22 +81,49 @@ const App = () => {
         <Route path="/reset-password" exact>
           <ResetPassword />
         </Route>
+        <Route path="/feed" exact>
+          <Feed />
+        </Route>
+        <Route path="/ingredients/:id" exact>
+          <Ingredient />
+        </Route>
+        <Route path="/feed/:id" exact>
+          <OrderInfo url={"/all"} />
+        </Route>
+
         <ProtectedRoute path="/profile" exact>
           <Profile />
         </ProtectedRoute>
-        <Route path="/ingredients/:id" exact>
-          <IngredientPage />
-        </Route>
+        <ProtectedRoute path="/profile/orders" exact>
+          <ProfileHistory />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders/:id" exact>
+          <OrderInfo url={`?token=${cookie}`} />
+        </ProtectedRoute>
+
         <Route path="*">
           <NotFound />
         </Route>
       </Switch>
+
       {background && (
-        <Route path="/ingredients/:id">
-          <Modal title="Детали ингредиента" onClose={closeModal}>
-            <IngredientDetails />
-          </Modal>
-        </Route>
+        <>
+          <Route path="/ingredients/:id">
+            <Modal title="Детали ингредиента" onClose={closeModal}>
+              <IngredientDetails />
+            </Modal>
+          </Route>
+          <Route path="/feed/:id">
+            <Modal title="" onClose={closeModal}>
+              <OrderInfoPage />
+            </Modal>
+          </Route>
+          <ProtectedRoute path="/profile/orders/:id">
+            <Modal title="" onClose={closeModal}>
+              <OrderInfoPage />
+            </Modal>
+          </ProtectedRoute>
+        </>
       )}
     </div>
   );

@@ -72,7 +72,9 @@ const BurgerConstructor = () => {
       history.replace("/login");
     }
     if (user) {
-      dispatch(getOrder(idIngredients(ingredientsConstructor)));
+      //([bun, ...ingredientsConstructor, bun])); не по макету, но так красивее
+
+      dispatch(getOrder(idIngredients([bun, ...ingredientsConstructor])));
       setOrderDetailsOpened(true);
     }
   };

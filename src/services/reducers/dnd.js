@@ -7,6 +7,7 @@ import {
 } from "../actions/dnd.js";
 
 const initialStateDnd = {
+  ingredientsOrder: {},
   bun: [],
   ingredientsConstructor: [],
 };

@@ -4,8 +4,11 @@ import Register from "./register/register";
 import ForgotPassword from "./forgot-password/forgot-password";
 import ResetPassword from "./reset-password/reset-password";
 import Profile from "./profile/profile";
-import IngredientPage from "./ingredient-page/ingredient-page";
+import Ingredient from "./ingredient/ingredient";
 import NotFound from "./not-found/not-found";
+import Feed from "./feed/feed";
+import ProfileHistory from "./order-history/order-history";
+import OrderInfo from "./order-info/order-info";
 
 export {
   Home,
@@ -14,6 +17,9 @@ export {
   ForgotPassword,
   ResetPassword,
   Profile,
-  IngredientPage,
+  Ingredient,
   NotFound,
+  Feed,
+  ProfileHistory,
+  OrderInfo,
 };

@@ -9,7 +9,13 @@ const OrderDetails = () => {
   return (
     <div className={styles.box}>
       <h3 className={`${styles.number} text text_type_digits-large mt-30`}>
-        {order}
+        {!order ? (
+          <p className="text text_type_main-default">
+            Готовим номер заказа подаждите...
+          </p>
+        ) : (
+          order
+        )}
       </h3>
       <p className={`${styles.text} text text_type_main-medium mt-8 mb-15`}>
         идентификатор заказа
