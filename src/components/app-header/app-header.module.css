@@ -27,7 +27,7 @@
 .header__link {
   text-decoration: none;
   display: flex;
-  color: white;
+  color: var(--text-primary-color);
 }
 
 .header__link:first-child {
@@ -47,4 +47,6 @@
   cursor: pointer;
   background: transparent;
   border: none;
+  color: #fff;
+  text-decoration: none;
 }

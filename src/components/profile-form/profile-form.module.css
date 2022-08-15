@@ -1,0 +1,15 @@
+.input {
+  margin-bottom: 24px;
+  min-height: 64px;
+  width: 100%;
+}
+
+.input div {
+  width: 100%;
+  text-align: right;
+}
+
+.btns {
+  display: flex;
+  justify-content: flex-end;
+}

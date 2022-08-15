@@ -4,20 +4,15 @@ import styles from "./burger-ingredients.module.css";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsCategory from "../ingredients-category/ingredients-category";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import { useSelector, useDispatch } from "react-redux";
-import {
-  INGREDIENT_DETAILS,
-  DETAILS_REMOVE,
-} from "../../services/actions/details";
+import { INGREDIENT_DETAILS } from "../../services/actions/details";
 import { useInView } from "react-hook-inview";
 
 const BurgerIngredients = () => {
   const dispatch = useDispatch();
 
-  const { ingredients } = useSelector((state) => state.burgerIngredients);
+  const { ingredients } = useSelector((store) => store.burgerIngredients);
 
   const [current, setCurrent] = useState("bun"); //стейт для категорий
   const [isIngredientsOpened, setIngredientsOpened] = useState(false); //стейт для модального окна
@@ -78,12 +73,6 @@ const BurgerIngredients = () => {
       data: ingredient,
     });
     setIngredientsOpened(true);
-  };
-
-  // Закрытие модального окна
-  const closeModals = () => {
-    setIngredientsOpened(false);
-    dispatch({ type: DETAILS_REMOVE });
   };
 
   return (
@@ -157,11 +146,6 @@ const BurgerIngredients = () => {
             Ингредиенты пока не загрузили...
           </p>{" "}
         </>
-      )}
-      {isIngredientsOpened && (
-        <Modal title="Детали ингредиента" onClose={closeModals}>
-          <IngredientDetails />
-        </Modal>
       )}
     </section>
   );
