@@ -1,5 +1,3 @@
-import update from "immutability-helper";
-
 import {
   ADD_BUN,
   ADD_INGREDIENTS_CONSTRUCTOR,
@@ -9,6 +7,7 @@ import {
 } from "../actions/dnd.js";
 
 const initialStateDnd = {
+  ingredientsOrder: {},
   bun: [],
   ingredientsConstructor: [],
 };
@@ -38,19 +37,19 @@ export const dndReducer = (state = initialStateDnd, action) => {
       };
     }
     case MOVE_CONSTRUCTOR_ELEMENT: {
-      const dragConstructor =
-        state.ingredientsConstructor[action.data.dragIndex];
-      const ingredientsConstructor = update(state.ingredientsConstructor, {
-        $splice: [
-          [action.data.dragIndex, 1],
-          [action.data.hoverIndex, 0, dragConstructor],
-        ],
-      });
+      const dragConstructor = [...state.ingredientsConstructor];
+      dragConstructor.splice(
+        action.data.dragIndex,
+        0,
+        dragConstructor.splice(action.data.hoverIndex, 1)[0]
+      );
+
       return {
         ...state,
-        ingredientsConstructor,
+        ingredientsConstructor: dragConstructor,
       };
     }
+    //использую для сброса ингредиентов в конструторе в order.js
     case RESET_ELEMENT: {
       return {
         ...state,
