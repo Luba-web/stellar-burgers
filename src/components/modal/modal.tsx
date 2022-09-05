@@ -14,14 +14,9 @@ interface IModal {
 }
 
 const Modal = ({ title, children, onClose }: IModal) => {
-  const handleEscKeydown = (evt: {key: string}) => {
+  const handleEscKeydown = (evt: KeyboardEvent) => {
     evt.key === "Escape" && onClose();
   };
-  
-  //больше не нужно?
-  // const closeModalBtn = (evt: {target: string}) => {
-  //   evt.target && onClose();
-  // };
 
   useEffect(() => {
     document.addEventListener("keydown", handleEscKeydown);

@@ -1,9 +1,10 @@
 import { TWSAction } from "../actions/ws-action";
 import { MiddlewareAPI, Middleware } from "redux";
+import { AppDispatch, RootState } from "../types";
 
 
 export const socketMiddleware = (wsUrl: string, wsActions: TWSAction): Middleware => {
-  return (store: MiddlewareAPI) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;

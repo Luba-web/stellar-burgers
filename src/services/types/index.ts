@@ -1,7 +1,6 @@
 import { store } from '../store';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, ActionCreator } from 'redux';
-//import { rootReducer } from "../reducers/index";
 
 import { TDetailsActions } from "../actions/details";
 import { TConstructorActions } from "../actions/dnd";
@@ -14,7 +13,7 @@ import { TWSActions } from "../actions/ws-action";
 
 type TApplicationActions = TDetailsActions | TConstructorActions | TForgotPasswordActions | TIngredientsActions | TOrdersActions | TResetActions | TUserActions | TWSActions;
 
-export type RootState = ReturnType<typeof store.getState>;//rootReducer или как в тренажере store.getState, что лучше ?
+export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = ThunkDispatch<RootState, never, TApplicationActions>
 

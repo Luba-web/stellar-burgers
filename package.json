@@ -51,7 +51,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://luba-web.github.io/stellar-burgers/",
+  "homepage": "./",
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
     "gh-pages": "^4.0.0"
